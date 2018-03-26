@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">The News</string>
+    <string name="powered_by_newsapi_org">Powered By newsapi.org</string>
+    <string name="retry">Retry</string>
+</resources>
