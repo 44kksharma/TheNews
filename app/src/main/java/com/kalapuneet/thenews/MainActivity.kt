@@ -6,6 +6,8 @@ import android.arch.lifecycle.ViewModelProvider
 import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
+import android.support.v7.widget.RecyclerView
+import android.widget.ProgressBar
 import com.kalapuneet.thenews.network.api.NewsApi
 import com.kalapuneet.thenews.network.models.Response
 import com.kalapuneet.thenews.repository.NetworkState
@@ -18,12 +20,21 @@ class MainActivity : AppCompatActivity() {
     private lateinit var model: ArticleViewModel
     private lateinit var adapter: NewsAdapter
 
+    private lateinit var dataLoadingProgressBar: ProgressBar
+    private lateinit var newsItemRv: RecyclerView
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         model = getViewModel()
+        initUi()
         initAdapter()
         refresh()
+    }
+
+    private fun initUi() {
+        dataLoadingProgressBar = findViewById(R.id.data_loading_progress)
+        newsItemRv = findViewById(R.id.news_item_rv)
     }
 
     private fun refresh() {
@@ -31,12 +42,14 @@ class MainActivity : AppCompatActivity() {
         val response = repo.refresh()
         response.articleList.observe(this, Observer<Response> {
             it?.articles?.let {
-               adapter.articleList = it
+                adapter.articleList = it
+                adapter.notifyDataSetChanged()
             }
         })
         response.networkState.observe(this, Observer<NetworkState> {
             it?.let {
                 adapter.setNetworkState(it)
+                adapter.notifyDataSetChanged()
             }
         })
     }
@@ -46,6 +59,7 @@ class MainActivity : AppCompatActivity() {
             refresh()
         })
         adapter.articleList = ArrayList()
+        newsItemRv.adapter = adapter
     }
 
     private fun getViewModel(): ArticleViewModel {

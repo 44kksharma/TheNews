@@ -18,7 +18,7 @@ interface NewsApi {
     ): Call<Response>
 
     companion object {
-        private const val BASE_URL = "https://www.newsapi.org/"
+        private const val BASE_URL = "https://newsapi.org/"
 
         fun create(): NewsApi = create(HttpUrl.parse(BASE_URL)!!)
 
