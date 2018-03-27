@@ -12,7 +12,7 @@ import retrofit2.Callback
 class NewsArticlesRepository(private val api: NewsApi, private val ioExecutor: Executor) {
 
     @MainThread
-    private fun refresh(): Listing<Response> {
+    fun refresh(): Listing<Response> {
         val networkState = MutableLiveData<NetworkState>()
         val response = MutableLiveData<Response>()
         networkState.value = NetworkState.LOADING
