@@ -12,7 +12,6 @@ import com.kalapuneet.thenews.repository.NetworkState
 import com.kalapuneet.thenews.repository.NewsArticlesRepository
 import com.kalapuneet.thenews.ui.ArticleViewModel
 import com.kalapuneet.thenews.ui.NewsAdapter
-import java.util.concurrent.Executor
 
 class MainActivity : AppCompatActivity() {
 
