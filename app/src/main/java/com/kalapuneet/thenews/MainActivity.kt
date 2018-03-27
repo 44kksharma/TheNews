@@ -7,11 +7,13 @@ import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.RecyclerView
+import android.view.View
 import android.widget.ProgressBar
 import com.kalapuneet.thenews.network.api.NewsApi
 import com.kalapuneet.thenews.network.models.Response
 import com.kalapuneet.thenews.repository.NetworkState
 import com.kalapuneet.thenews.repository.NewsArticlesRepository
+import com.kalapuneet.thenews.repository.Status
 import com.kalapuneet.thenews.ui.ArticleViewModel
 import com.kalapuneet.thenews.ui.NewsAdapter
 
@@ -38,6 +40,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun refresh() {
+        dataLoadingProgressBar.visibility = View.VISIBLE
         val repo = NewsArticlesRepository(NewsApi.create(), ServiceLocator.instance(this).getNetworkExecutor())
         val response = repo.refresh()
         response.articleList.observe(this, Observer<Response> {
@@ -48,6 +51,9 @@ class MainActivity : AppCompatActivity() {
         })
         response.networkState.observe(this, Observer<NetworkState> {
             it?.let {
+                if (it.status == Status.SUCCESS || it.status == Status.FAILED) {
+                    dataLoadingProgressBar.visibility = View.GONE
+                }
                 adapter.setNetworkState(it)
                 adapter.notifyDataSetChanged()
             }

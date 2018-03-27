@@ -10,6 +10,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import com.kalapuneet.thenews.R
 import com.kalapuneet.thenews.network.models.ArticlesItem
+import com.squareup.picasso.Picasso
 
 class NewsArticleItemViewHolder(view: View): RecyclerView.ViewHolder(view) {
     private val image = view.findViewById<ImageView>(R.id.image)
@@ -30,6 +31,9 @@ class NewsArticleItemViewHolder(view: View): RecyclerView.ViewHolder(view) {
         this.articlesItem = articlesItem
         title.text = articlesItem.title ?: "loading"
         description.text = articlesItem.description ?: "loading"
+        articlesItem.urlToImage?.let {
+            Picasso.get().load(it.toString()).into(image)
+        }
     }
 
     companion object {
